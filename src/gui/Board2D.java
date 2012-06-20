@@ -38,7 +38,7 @@ public class Board2D implements Board
     public void set_results( LinkedList<Symbol> results  )
     {
        this.results = results;
-       this.results_animated = new LinkedList<Symbol>();
+       //this.results_animated = new LinkedList<Symbol>();
     }
 
     @Override

@@ -15,6 +15,7 @@ public class Main extends PApplet
 {
     private Environment env;
     private final static int BOARD_SIZE = GuiConfig.BOARD_COLUMNS;
+    LinkedList<Symbol> results;
 
     public static void main(String[] args)
     {
@@ -28,6 +29,7 @@ public class Main extends PApplet
         this.screenHeight = GuiConfig.SCREEN_HEIGHT;
         background(100, 100, 100);
         env = new Environment(this);
+        results = new LinkedList<Symbol>();
     }
 
     public void draw()
@@ -37,11 +39,11 @@ public class Main extends PApplet
 
     public void mouseClicked()
     {
-        // testliste mit vordefinierten zuegen!!
-        LinkedList<Symbol> results = new LinkedList<Symbol>();
-        Minimax mmPlayerMax = new Minimax(Player.MAX, BOARD_SIZE);
-		Minimax mmPlayerMin = new Minimax(Player.MIN, BOARD_SIZE);
-    	State prevState = new State();
+
+
+        //Minimax mmPlayerMax = new Minimax(Player.MAX, BOARD_SIZE);
+		//Minimax mmPlayerMin = new Minimax(Player.MIN, BOARD_SIZE);
+    	//State prevState = new State();
     	
         Coordinate2D co = env.get_board().get_clicked_coordinates();
         System.out.println("Section: " + co.section);
@@ -49,12 +51,13 @@ public class Main extends PApplet
         int x = (field) % BOARD_SIZE;
         int y = (field - x) / BOARD_SIZE;
          
-		prevState.field[y][x] = 1;	
+		//prevState.field[y][x] = 1;
 
-    	State currState = prevState.deepCopy();
+    	//State currState = prevState.deepCopy();
     	
-		results.add(new Cross(field));
+		results.add(new RedCircle(field));
 
+        /*
 		System.out.println(prevState.toString());
 		for (int i=0; i<BOARD_SIZE*BOARD_SIZE-1; i++)
 		{
@@ -72,7 +75,7 @@ public class Main extends PApplet
 			System.out.println(prevState.toString());
 		}
 
-
+         */
 
 
         env.get_board().set_results( results );
