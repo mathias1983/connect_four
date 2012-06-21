@@ -32,7 +32,7 @@ public class Board2D implements Board
         board_x     =  (GuiConfig.SCREEN_WIDTH/2)  - (GuiConfig.BOARD_WIDTH/2);
         board_y     =  (GuiConfig.SCREEN_HEIGHT/2) - (GuiConfig.BOARD_HEIGHT/2);
         cell_width  =   GuiConfig.BOARD_WIDTH  / GuiConfig.BOARD_COLUMNS;
-        cell_height =   GuiConfig.BOARD_HEIGHT / GuiConfig.BOARD_COLUMNS;
+        cell_height =   cell_width;
     }
 
     public void set_results( LinkedList<Symbol> results  )
@@ -129,11 +129,11 @@ public class Board2D implements Board
 
     private void draw_rows( float board_x, float board_y  )
     {
-        for( int i = 1; i <= GuiConfig.BOARD_COLUMNS; ++i )
+        for( int i = 1; i <= GuiConfig.BOARD_ROWS; ++i )
         {
             float row_x1  = board_x;
             float row_x2  = board_x + GuiConfig.BOARD_WIDTH;
-            float row_y   = board_y + i * (GuiConfig.BOARD_HEIGHT / GuiConfig.BOARD_COLUMNS);
+            float row_y   = board_y + i * (GuiConfig.BOARD_HEIGHT / GuiConfig.BOARD_ROWS);
             gui.fill(0,255,255);
             gui.line( row_x1, row_y, row_x2, row_y  );
         }

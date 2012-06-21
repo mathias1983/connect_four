@@ -33,7 +33,7 @@ public class Coordinate2D
         int section_counter = 0;
         this.section        =  section_counter;
 
-        for( int i = 1; i <= GuiConfig.BOARD_COLUMNS; ++i )
+        for( int i = 1; i <= GuiConfig.BOARD_ROWS; ++i )
         {
             float start_y = (board_y + i * cell_height) - cell_height;
             float end_y   = (board_y + i * cell_height);
@@ -64,7 +64,7 @@ public class Coordinate2D
         int section_counter = 0;
         this.section        =  section_counter;
 
-        for( int i = 1; i <= GuiConfig.BOARD_COLUMNS; ++i )
+        for( int i = 1; i <= GuiConfig.BOARD_ROWS; ++i )
         {
             float start_y = (board_y + i * cell_height) - cell_height;
             float end_y   = (board_y + i * cell_height);

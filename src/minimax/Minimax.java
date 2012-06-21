@@ -134,7 +134,89 @@ public class Minimax
 		}
 		return actions;
 	}
-	
+     /*
+    private int utility()
+    {
+        int[][] feld = spiel.getFeld();
+
+        int min2er = 0; int max2er = 0;
+        int min3er = 0; int max3er = 0;
+
+        for (int x=0; x<BREITE; x++) {
+            for (int y=0; y<HOEHE; y++) {
+                // Noch 4 Chips nach oben moeglich?
+                if (HOEHE-y>=4) {
+                    // 4 gleiche Chips?
+                    if (istReihe(feld,MAXCONST,x,y,0,1)==4)
+                        return POS_INFINITY;  // gewonnen
+                    else if (istReihe(feld,MINCONST,x,y,0,1)==4)
+                        return NEG_INFINITY;  // verloren
+                        // 3 gleiche Chips?
+                    else if (istReihe(feld,MAXCONST,x,y,0,1)==3)
+                        max3er++;
+                    else if (istReihe(feld,MINCONST,x,y,0,1)==3)
+                        min3er++;
+                        // 2 gleiche Chips?
+                    else if (istReihe(feld,MAXCONST,x,y,0,1)==2)
+                        max2er++;
+                    else if (istReihe(feld,MINCONST,x,y,0,1)==2)
+                        min2er++;
+                }
+                // Noch 4 Chips nach rechts oben moeglich?
+                if ((HOEHE-y>=4) && (BREITE-x>=4)) {
+                    // 4 gleiche Chips nach rechts oben?
+                    if (istReihe(feld,MAXCONST,x,y,1,1)==4)
+                        return POS_INFINITY;  // gewonnen
+                    else if (istReihe(feld,MINCONST,x,y,1,1)==4)
+                        return NEG_INFINITY;  // verloren
+                        // 3 gleiche Chips uebereinander?
+                    else if (istReihe(feld,MAXCONST,x,y,1,1)==3)
+                        max3er++;
+                    else if (istReihe(feld,MINCONST,x,y,1,1)==3)
+                        min3er++;
+                        // 2 gleiche Chips uebereinander?
+                    else if (istReihe(feld,MAXCONST,x,y,1,1)==2)
+                        max2er++;
+                    else if (istReihe(feld,MINCONST,x,y,1,1)==2)
+                        min2er++;
+                }
+                // Noch 4 Chips nach rechts moeglich?
+                if (BREITE-x>=4) {
+                    if (istReihe(feld,MAXCONST,x,y,1,0)==4)
+                        return POS_INFINITY;  // gewonnen
+                    else if (istReihe(feld,MINCONST,x,y,1,0)==4)
+                        return NEG_INFINITY;  // verloren
+                        // 3 gleiche Chips uebereinander?
+                    else if (istReihe(feld,MAXCONST,x,y,1,0)==3)
+                        max3er++;
+                    else if (istReihe(feld,MINCONST,x,y,1,0)==3)
+                        min3er++;
+                        // 2 gleiche Chips uebereinander?
+                    else if (istReihe(feld,MAXCONST,x,y,1,0)==2)
+                        max2er++;
+                    else if (istReihe(feld,MINCONST,x,y,1,0)==2)
+                        min2er++;
+                }
+                // Noch 4 Chips nach rechts unten moeglich?
+                if ((BREITE-x>=4) && (y>=3)) {
+                    if (istReihe(feld,MAXCONST,x,y,1,-1)==4)
+                        return POS_INFINITY;  // gewonnen
+                    else if (istReihe(feld,MINCONST,x,y,1,-1)==4)
+                        return NEG_INFINITY;  // verloren
+                        // 3 gleiche Chips uebereinander?
+                    else if (istReihe(feld,MAXCONST,x,y,1,-1)==3)
+                        max3er++;
+                    else if (istReihe(feld,MINCONST,x,y,1,-1)==3)
+                        min3er++;
+                        // 2 gleiche Chips uebereinander?
+                    else if (istReihe(feld,MAXCONST,x,y,1,-1)==2)
+                        max2er++;
+                    else if (istReihe(feld,MINCONST,x,y,1,-1)==2)
+                        min2er++;
+                }
+            }
+    }
+	      */
 	private int utility(State state) 
 	{
 		int val = 0;
