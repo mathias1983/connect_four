@@ -9,6 +9,9 @@ public class Minimax
 {	
 	public enum Player 
 	{MIN, MAX};
+
+    private static final int POS_INFINITY = (int)Double.POSITIVE_INFINITY;
+    private static final int NEG_INFINITY = (int)Double.NEGATIVE_INFINITY;
 	
 	Player player = Player.MAX;
 	public static int boardSize;
@@ -148,98 +151,123 @@ public class Minimax
 		}
 		return actions;
 	}
-     /*
-    private int utility()
+
+    private int is_row(int[][] field, Player player_, int x, int y, int dx, int dy) {
+        int num = 0;
+        int player = -1;
+        if( player_ == Player.MAX )
+            player = 1;
+
+        // 4 freie oder von spieler belegte Felder in Richtung (dx,dy)?
+        if (  ((field[x][y]==player) || (field[x][y]==0))
+                      && ((field[x+1*dx][y+1*dy]==player) || (field[x+1*dx][y+1*dy]==0))
+                      && ((field[x+2*dx][y+2*dy]==player) || (field[x+2*dx][y+2*dy]==0))
+                      && ((field[x+3*dx][y+3*dy]==player) || (field[x+3*dx][y+3*dy]==0))) {
+
+            // zaehle Anzahl von spieler belegter Felder
+            for (int i=0; i<4; i++) if (field[x+i*dx][y+i*dy]==player) num++;
+        }
+        return num;
+    }
+
+    private int utility( State state )
     {
-        int[][] feld = spiel.getFeld();
+        int[][] field = state.field;
+        int columns = GuiConfig.BOARD_COLUMNS;
+        int rows    = GuiConfig.BOARD_ROWS;
 
-        int min2er = 0; int max2er = 0;
-        int min3er = 0; int max3er = 0;
 
-        for (int x=0; x<BREITE; x++) {
-            for (int y=0; y<HOEHE; y++) {
+        int min2 = 0; int max2 = 0;
+        int min3 = 0; int max3 = 0;
+
+        for (int x=0; x<columns; x++) {
+            for (int y=0; y<rows; y++) {
                 // Noch 4 Chips nach oben moeglich?
-                if (HOEHE-y>=4) {
+                if (rows-y>=4) {
                     // 4 gleiche Chips?
-                    if (istReihe(feld,MAXCONST,x,y,0,1)==4)
+                    if (is_row(field, Player.MAX, x, y, 0, 1)==4)
                         return POS_INFINITY;  // gewonnen
-                    else if (istReihe(feld,MINCONST,x,y,0,1)==4)
+                    else if (is_row(field, Player.MIN, x, y, 0, 1)==4)
                         return NEG_INFINITY;  // verloren
                         // 3 gleiche Chips?
-                    else if (istReihe(feld,MAXCONST,x,y,0,1)==3)
-                        max3er++;
-                    else if (istReihe(feld,MINCONST,x,y,0,1)==3)
-                        min3er++;
+                    else if (is_row(field, Player.MAX, x, y, 0, 1)==3)
+                        max3++;
+                    else if (is_row(field, Player.MIN, x, y, 0, 1)==3)
+                        min3++;
                         // 2 gleiche Chips?
-                    else if (istReihe(feld,MAXCONST,x,y,0,1)==2)
-                        max2er++;
-                    else if (istReihe(feld,MINCONST,x,y,0,1)==2)
-                        min2er++;
+                    else if (is_row(field, Player.MAX, x, y, 0, 1)==2)
+                        max2++;
+                    else if (is_row(field, Player.MIN, x, y, 0, 1)==2)
+                        min2++;
                 }
                 // Noch 4 Chips nach rechts oben moeglich?
-                if ((HOEHE-y>=4) && (BREITE-x>=4)) {
+                if ((rows-y>=4) && (columns-x>=4)) {
                     // 4 gleiche Chips nach rechts oben?
-                    if (istReihe(feld,MAXCONST,x,y,1,1)==4)
+                    if (is_row(field, Player.MAX, x, y, 1, 1)==4)
                         return POS_INFINITY;  // gewonnen
-                    else if (istReihe(feld,MINCONST,x,y,1,1)==4)
+                    else if (is_row(field, Player.MIN, x, y, 1, 1)==4)
                         return NEG_INFINITY;  // verloren
                         // 3 gleiche Chips uebereinander?
-                    else if (istReihe(feld,MAXCONST,x,y,1,1)==3)
-                        max3er++;
-                    else if (istReihe(feld,MINCONST,x,y,1,1)==3)
-                        min3er++;
+                    else if (is_row(field, Player.MAX, x, y, 1, 1)==3)
+                        max3++;
+                    else if (is_row(field, Player.MIN, x, y, 1, 1)==3)
+                        min3++;
                         // 2 gleiche Chips uebereinander?
-                    else if (istReihe(feld,MAXCONST,x,y,1,1)==2)
-                        max2er++;
-                    else if (istReihe(feld,MINCONST,x,y,1,1)==2)
-                        min2er++;
+                    else if (is_row(field, Player.MAX, x, y, 1, 1)==2)
+                        max2++;
+                    else if (is_row(field, Player.MIN, x, y, 1, 1)==2)
+                        min2++;
                 }
                 // Noch 4 Chips nach rechts moeglich?
-                if (BREITE-x>=4) {
-                    if (istReihe(feld,MAXCONST,x,y,1,0)==4)
+                if (columns-x>=4) {
+                    if (is_row(field, Player.MAX, x, y, 1, 0)==4)
                         return POS_INFINITY;  // gewonnen
-                    else if (istReihe(feld,MINCONST,x,y,1,0)==4)
+                    else if (is_row(field, Player.MIN, x, y, 1, 0)==4)
                         return NEG_INFINITY;  // verloren
                         // 3 gleiche Chips uebereinander?
-                    else if (istReihe(feld,MAXCONST,x,y,1,0)==3)
-                        max3er++;
-                    else if (istReihe(feld,MINCONST,x,y,1,0)==3)
-                        min3er++;
+                    else if (is_row(field, Player.MAX, x, y, 1, 0)==3)
+                        max3++;
+                    else if (is_row(field, Player.MIN, x, y, 1, 0)==3)
+                        min3++;
                         // 2 gleiche Chips uebereinander?
-                    else if (istReihe(feld,MAXCONST,x,y,1,0)==2)
-                        max2er++;
-                    else if (istReihe(feld,MINCONST,x,y,1,0)==2)
-                        min2er++;
+                    else if (is_row(field, Player.MAX, x, y, 1, 0)==2)
+                        max2++;
+                    else if (is_row(field, Player.MIN, x, y, 1, 0)==2)
+                        min2++;
                 }
                 // Noch 4 Chips nach rechts unten moeglich?
-                if ((BREITE-x>=4) && (y>=3)) {
-                    if (istReihe(feld,MAXCONST,x,y,1,-1)==4)
+                if ((columns-x>=4) && (y>=3)) {
+                    if (is_row(field, Player.MAX, x, y, 1, -1)==4)
                         return POS_INFINITY;  // gewonnen
-                    else if (istReihe(feld,MINCONST,x,y,1,-1)==4)
+                    else if (is_row(field, Player.MIN, x, y, 1, -1)==4)
                         return NEG_INFINITY;  // verloren
                         // 3 gleiche Chips uebereinander?
-                    else if (istReihe(feld,MAXCONST,x,y,1,-1)==3)
-                        max3er++;
-                    else if (istReihe(feld,MINCONST,x,y,1,-1)==3)
-                        min3er++;
+                    else if (is_row(field, Player.MAX, x, y, 1, -1)==3)
+                        max3++;
+                    else if (is_row(field, Player.MIN, x, y, 1, -1)==3)
+                        min3++;
                         // 2 gleiche Chips uebereinander?
-                    else if (istReihe(feld,MAXCONST,x,y,1,-1)==2)
-                        max2er++;
-                    else if (istReihe(feld,MINCONST,x,y,1,-1)==2)
-                        min2er++;
+                    else if (is_row(field, Player.MAX, x, y, 1, -1)==2)
+                        max2++;
+                    else if (is_row(field, Player.MIN, x, y, 1, -1)==2)
+                        min2++;
                 }
             }
+        }
+
+       return 10*max2 + 20*max3 - 10*min2 - 20*min3;
     }
-	      */
 
 
+
+    /*
 	private int utility(State state) 
 	{
 		int val = 0;
 		for (int i=0; i<boardSize; i++) 
 			val += state.field[i][i];
 	
-		if (val == boardSize && player == Player.MAX || val == -boardSize && player == Player.MIN) 
+		if (val == boardSize && player == Player.MAX || val == -boardSize && player == Player.MIN)
             return 1;
     
 		if ( val == boardSize && player == Player.MIN || val == -boardSize && player == Player.MAX) 
@@ -282,7 +310,7 @@ public class Minimax
 		}
 		return 0;
 	}
-
+	*/
 	
 	public boolean terminalTest(State state) 
 	{
