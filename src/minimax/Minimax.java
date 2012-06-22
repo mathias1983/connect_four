@@ -1,5 +1,7 @@
 package minimax;
 
+import config.GuiConfig;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,10 +13,10 @@ public class Minimax
 	Player player = Player.MAX;
 	public static int boardSize;
 
-	public Minimax(Player p, int boardSize) 
+	public Minimax(Player p)
 	{
 		this.player = p;
-		Minimax.boardSize = boardSize;
+
 	}
 	
 	public State getMinimaxDecision(State initialState) 
@@ -109,8 +111,12 @@ public class Minimax
 		List<Action> actions = new ArrayList<Action>();
 		int moves = 0;
 
-		for (int i=0; i<boardSize; i++) 
-			for (int j =0; j<boardSize; j++) 
+        int columns = GuiConfig.BOARD_COLUMNS;
+        int rows    = GuiConfig.BOARD_ROWS;
+        int row_count = rows - 1;
+
+		for (int i=0; i<rows; i++)
+			for (int j =0; j<columns; j++)
 				if(state.field[i][j] != 0)
 					moves++;
 		
@@ -118,19 +124,27 @@ public class Minimax
 		if(moves % 2 == 1)
 			player = Player.MIN;
 
-		for (int i=0; i<boardSize; i++) 
+        // jeweils eine Reihe absuchen
+		for (int i=0; i<columns; i++)
 		{
-			for (int j =0; j<boardSize; j++) 
-			{
-				if (state.field[i][j] == 0) 
-				{
-					Action action = new Action();
-					action.col = i;
-					action.row = j;
-					action.player = player;
-					actions.add(action);
-				}
-			}
+            // ganz unten im spielbrett(höchster y wert) zuerst nach leerem Feld suchen
+            // wenn keines gefunden ein feld darüber suchen
+			while( row_count > -1 )
+            {
+                if (state.field[row_count][i] == 0)
+                {
+                    Action action = new Action();
+                    action.col = i;
+                    action.row = row_count;
+                    action.player = player;
+                    actions.add(action);
+                    break;
+                }
+                // ein feld höher gehen
+                --row_count;
+            }
+            row_count = rows - 1;
+
 		}
 		return actions;
 	}
@@ -217,6 +231,8 @@ public class Minimax
             }
     }
 	      */
+
+
 	private int utility(State state) 
 	{
 		int val = 0;
@@ -266,38 +282,42 @@ public class Minimax
 		}
 		return 0;
 	}
+
 	
 	public boolean terminalTest(State state) 
 	{
 		int playedFields = 0;
+        int columns = GuiConfig.BOARD_COLUMNS;
+        int rows    = GuiConfig.BOARD_ROWS;
 		
-		for (int i=0; i<boardSize; i++) 
+		for (int i=0; i<rows; i++)
 		{
 			int totalRow = 0;
-			for (int j=0; j<boardSize; j++) 
+			for (int j=0; j<columns; j++)
 			{
-				if (state.field[i][j] != 0) 
+				if (state.field[i][j] != 0)
 					playedFields++;
 				
 				totalRow += state.field[i][j];
 			}
-			if (Math.abs(totalRow) == boardSize) 
+			if (Math.abs(totalRow) == rows)
 				return true;
 		}
 		
-		if (playedFields == boardSize*boardSize)
+		if (playedFields == rows*columns)
 			return true;
 
-		for (int j=0; j<boardSize; j++) 
+		for (int j=0; j<rows; j++)
 		{
 			int total = 0;
-			for (int i=0; i<boardSize; i++) 
+			for (int i=0; i<columns; i++)
 				total += state.field[i][j];
 
-			if (Math.abs(total) == boardSize) 
+			if (Math.abs(total) == columns)
 				return true;
 		}
-		
+
+        // diagonal
 		int total = 0;
 		for (int i=0; i<boardSize; i++) 
 			total += state.field[i][i];

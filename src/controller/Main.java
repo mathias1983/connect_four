@@ -45,20 +45,30 @@ public class Main extends PApplet
 
 
         //Minimax mmPlayerMax = new Minimax(Player.MAX, BOARD_SIZE);
-		//Minimax mmPlayerMin = new Minimax(Player.MIN, BOARD_SIZE);
-    	//State prevState = new State();
+		Minimax mmPlayerMin = new Minimax(Player.MIN);
+    	State prevState = new State();
     	
         Coordinate2D co = env.get_board().get_clicked_coordinates();
         System.out.println("Section: " + co.section);
         int field = co.section;
         int x = (field) % BOARD_COLUMNS;
-        int y = (field - x) / BOARD_ROWS;
-         
-		//prevState.field[y][x] = 1;
+        int y = (field - x) / BOARD_COLUMNS;
 
-    	//State currState = prevState.deepCopy();
+        System.out.println(x+" "+y);
+
+
+        prevState.field[5][0] = 1;
+        prevState.field[4][0] = 1;
+        prevState.field[3][0] = 1;
+        prevState.field[2][0] = 1;
+        prevState.field[1][0] = 1;
+
+
+    	State currState = prevState.deepCopy();
+
+        currState = mmPlayerMin.getMinimaxDecision(prevState);
     	
-		results.add(new RedCircle(field));
+	//	results.add(new RedCircle(field));
 
         /*
 		System.out.println(prevState.toString());
@@ -80,8 +90,8 @@ public class Main extends PApplet
 
          */
 
-        System.out.println(x+" "+y);
-        env.get_board().set_results( results );
+
+   //     env.get_board().set_results( results );
     }
     
     private Symbol stateToSymbol(State prevState, State currState)
