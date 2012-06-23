@@ -56,12 +56,12 @@ public class Main extends PApplet
 
         System.out.println(x+" "+y);
 
-
+        // Testzüge!!!!!!!!!!!!!!!!!!!
         prevState.field[5][0] = 1;
         prevState.field[4][0] = 1;
         prevState.field[3][0] = 1;
         prevState.field[2][0] = 1;
-        prevState.field[1][0] = 1;
+        //prevState.field[1][0] = 1;
 
 
     	State currState = prevState.deepCopy();

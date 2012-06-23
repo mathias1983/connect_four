@@ -26,7 +26,7 @@ public class Minimax
 	{
 		System.out.println("player: " + player);
 		long t1 = System.currentTimeMillis();
-		
+		  boolean t = terminalTest(initialState);
 		Action bestAction = null;
 		double bestUtility = Double.NEGATIVE_INFINITY;
 		List<Action> actionList = getActions(initialState);
@@ -159,13 +159,15 @@ public class Minimax
             player = 1;
 
         // 4 freie oder von spieler belegte Felder in Richtung (dx,dy)?
-        if (  ((field[x][y]==player) || (field[x][y]==0))
-                      && ((field[x+1*dx][y+1*dy]==player) || (field[x+1*dx][y+1*dy]==0))
-                      && ((field[x+2*dx][y+2*dy]==player) || (field[x+2*dx][y+2*dy]==0))
-                      && ((field[x+3*dx][y+3*dy]==player) || (field[x+3*dx][y+3*dy]==0))) {
+        if (  ((field[y][x]==player) || (field[y][x]==0))
+                      && ((field[y+1*dy][x+1*dx]==player) || (field[y+1*dy][x+1*dx]==0))
+                      && ((field[y+2*dy][x+2*dx]==player) || (field[y+2*dy][x+2*dx]==0))
+                      && ((field[y+3*dy][x+3*dx]==player) || (field[y+3*dy][x+3*dx]==0))) {
 
             // zaehle Anzahl von spieler belegter Felder
-            for (int i=0; i<4; i++) if (field[x+i*dx][y+i*dy]==player) num++;
+            for (int i=0; i<4; i++)
+                if (field[y+i*dy][x+i*dx]==player)
+                    num++;
         }
         return num;
     }
