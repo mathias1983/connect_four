@@ -258,66 +258,14 @@ public class Minimax
        return 10*max2 + 20*max3 - 10*min2 - 20*min3;
     }
 
-
-
-    /*
-	private int utility(State state) 
-	{
-		int val = 0;
-		for (int i=0; i<boardSize; i++) 
-			val += state.field[i][i];
-	
-		if (val == boardSize && player == Player.MAX || val == -boardSize && player == Player.MIN)
-            return 1;
-    
-		if ( val == boardSize && player == Player.MIN || val == -boardSize && player == Player.MAX) 
-            return -1;
-		
-		val=0;
-		for (int i=0; i<boardSize; i++) 
-			val += state.field[i][boardSize-i-1];
-
-		if (val == boardSize && player == Player.MAX || val == -boardSize && player == Player.MIN) 
-            return 1;
-    
-		if ( val == boardSize && player == Player.MIN || val == -boardSize && player == Player.MAX) 
-            return -1;
-
-		for (int i=0; i<boardSize; i++) 
-		{
-			val = 0;
-			for (int j=0; j<boardSize; j++) 
-				val += state.field[i][j];
-
-			if (val == boardSize && player == Player.MAX || val == -boardSize && player == Player.MIN) 
-	            return 1;
-	    
-			if ( val == boardSize && player == Player.MIN || val == -boardSize && player == Player.MAX) 
-	            return -1;
-		}
-
-		for (int j=0; j<boardSize; j++) 
-		{
-			val = 0;
-			for (int i=0; i<boardSize; i++) 
-				val += state.field[i][j];
-
-			if (val == boardSize && player == Player.MAX || val == -boardSize && player == Player.MIN) 
-	            return 1;
-	    
-			if ( val == boardSize && player == Player.MIN || val == -boardSize && player == Player.MAX) 
-	            return -1;
-		}
-		return 0;
-	}
-	*/
 	
 	public boolean terminalTest(State state) 
 	{
 		int playedFields = 0;
         int columns = GuiConfig.BOARD_COLUMNS;
         int rows    = GuiConfig.BOARD_ROWS;
-		
+
+        // besetzte felder zählen
 		for (int i=0; i<rows; i++)
 		{
 			int totalRow = 0;
@@ -331,20 +279,45 @@ public class Minimax
 			if (Math.abs(totalRow) == rows)
 				return true;
 		}
-		
+		// spielfeld voll belegt
 		if (playedFields == rows*columns)
 			return true;
 
-		for (int j=0; j<rows; j++)
-		{
-			int total = 0;
-			for (int i=0; i<columns; i++)
-				total += state.field[i][j];
 
-			if (Math.abs(total) == columns)
-				return true;
-		}
+        // 4er reihe gewinnbedingung
+        for (int x=0; x<columns; x++) {
+            for (int y=0; y<rows; y++) {
+                // Noch 4 Chips nach oben moeglich?
+                if (rows-y>=4) {
+                    // 4 gleiche Chips?
+                    if (is_row(state.field, Player.MAX, x, y, 0, 1)==4)
+                        return true;  // gewonnen
+                    else if (is_row(state.field, Player.MIN, x, y, 0, 1)==4)
+                        return true;  // verloren
+                }
+                if ((rows-y>=4) && (columns-x>=4)) {
+                    // 4 gleiche Chips nach rechts oben?
+                    if (is_row(state.field, Player.MAX, x, y, 1, 1)==4)
+                        return true;  // gewonnen
+                    else if (is_row(state.field, Player.MIN, x, y, 1, 1)==4)
+                        return true;  // verloren
+                }
+                if (columns-x>=4) {
+                    if (is_row(state.field, Player.MAX, x, y, 1, 0)==4)
+                        return true;  // gewonnen
+                    else if (is_row(state.field, Player.MIN, x, y, 1, 0)==4)
+                        return true;  // verloren
+                }
+                if ((columns-x>=4) && (y>=3)) {
+                    if (is_row(state.field, Player.MAX, x, y, 1, -1)==4)
+                        return true;  // gewonnen
+                    else if (is_row(state.field, Player.MIN, x, y, 1, -1)==4)
+                        return true;  // verloren
+                }
+            }
+        }
 
+        /*
         // diagonal
 		int total = 0;
 		for (int i=0; i<boardSize; i++) 
@@ -359,6 +332,8 @@ public class Minimax
 		
 		if (Math.abs(total) == boardSize) 
 			return true;
+
+			*/
 		
 		return false;		
 	}
