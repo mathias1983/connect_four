@@ -108,7 +108,15 @@ public class Minimax
 	
 		return resultState;
 	}
-	
+
+    /***
+     * Findet die nächsten möglichen Spielzüge und legt fest, welcher Spieler
+     * aktuell am Zug ist.
+     * Gültige Spielzüge sind leere Spielfelder die entweder ganz unten im Spielfeld sind
+     * oder leere Felder die sich über anderen Spielsteinen befinden.
+     * @param state
+     * @return
+     */
 	private List<Action> getActions(State state) 
 	{
 		List<Action> actions = new ArrayList<Action>();
