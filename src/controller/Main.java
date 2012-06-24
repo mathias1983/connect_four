@@ -57,16 +57,15 @@ public class Main extends PApplet
         System.out.println(x+" "+y);
 
         // Testzüge!!!!!!!!!!!!!!!!!!!
-        prevState.field[5][0] = 1;
-        prevState.field[4][0] = 1;
-        prevState.field[3][0] = 1;
-        prevState.field[2][0] = 1;
-        //prevState.field[1][0] = 1;
+
+        // Spielstein immer jeweils unten im Board einfügen, auch wenn click weiter oben erfolgte
+        prevState.rule_insert(  x );
 
 
-    	State currState = prevState.deepCopy();
 
-        currState = mmPlayerMin.getMinimaxDecision(prevState);
+  //  	State currState = prevState.deepCopy();
+
+ //       currState = mmPlayerMin.getMinimaxDecision(prevState);
     	
 	//	results.add(new RedCircle(field));
 

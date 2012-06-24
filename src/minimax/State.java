@@ -14,6 +14,27 @@ public class State
 				field[i][j] = 0;
 	}
 
+    /***
+     * Fügt Spielstein nach den 4 gewinnt Regeln ein, damit keiner
+     * "in der Luft" hängt.
+     * @return
+     */
+    public boolean rule_insert( int x )
+    {
+        int start = (GuiConfig.BOARD_ROWS - 1);
+        for(int y= start; y>=0; --y)
+        {
+            if( field[y][x] == 0 )
+            {
+                field[y][x] = 1;
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+
 	public State deepCopy()
 	{
 		State copy = new State();
