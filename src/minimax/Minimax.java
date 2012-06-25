@@ -26,14 +26,14 @@ public class Minimax
 	{
 		System.out.println("player: " + player);
 		long t1 = System.currentTimeMillis();
-		  boolean t = terminalTest(initialState);
+		boolean t = terminalTest(initialState);
 		Action bestAction = null;
 		double bestUtility = Double.NEGATIVE_INFINITY;
 		List<Action> actionList = getActions(initialState);
 		
 		for (Action action : actionList) 
 		{
-			double utility = minValue(getResult(initialState, action));
+			double utility = minValue(getResult(initialState, action), Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 			if (utility > bestUtility) 
 			{
 				bestUtility = utility;
@@ -49,7 +49,7 @@ public class Minimax
 		return resultState;		
 	}
 	
-	private double minValue(State state) 
+	private double minValue(State state, double alpha, double beta) 
 	{
 		double utility = Double.POSITIVE_INFINITY;
 		
@@ -65,13 +65,18 @@ public class Minimax
 		
 		for (Action action: actionList) 
 		{
-			double tmp = maxValue(getResult(state, action));
+			double tmp = maxValue(getResult(state, action), alpha, beta);
 			utility = Math.min(utility,tmp);
+			
+			if(utility <= alpha)
+				return utility;
+			
+			beta = Math.min(beta, utility);
 		}
 		return utility;
 	}
 	
-	private double maxValue(State state) 
+	private double maxValue(State state, double alpha, double beta) 
 	{
 		double utility = Double.NEGATIVE_INFINITY;
 		
@@ -87,8 +92,13 @@ public class Minimax
 		
 		for (Action action: actionList) 
 		{
-			double tmp = minValue(getResult(state,action));
+			double tmp = minValue(getResult(state,action), alpha, beta);
 			utility = Math.max(utility, tmp);
+			
+			if(utility >= beta)
+				return utility;
+			
+			alpha = Math.max(alpha, utility);
 		}
 		return utility;
 	}

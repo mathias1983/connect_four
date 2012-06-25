@@ -19,6 +19,7 @@ public class Main extends PApplet
 
 
     LinkedList<Symbol> results;
+    State state;
 
     public static void main(String[] args)
     {
@@ -33,6 +34,7 @@ public class Main extends PApplet
         background(100, 100, 100);
         env = new Environment(this);
         results = new LinkedList<Symbol>();
+        state = new State();
     }
 
     public void draw()
@@ -46,7 +48,7 @@ public class Main extends PApplet
 
         //Minimax mmPlayerMax = new Minimax(Player.MAX, BOARD_SIZE);
 		Minimax mmPlayerMin = new Minimax(Player.MIN);
-    	State prevState = new State();
+    	State prevState = state.deepCopy(); //new State();
     	
         Coordinate2D co = env.get_board().get_clicked_coordinates();
         System.out.println("Section: " + co.section);
@@ -59,11 +61,15 @@ public class Main extends PApplet
         // Testzüge!!!!!!!!!!!!!!!!!!!
 
         // Spielstein immer jeweils unten im Board einfügen, auch wenn click weiter oben erfolgte
-        boolean inserted = prevState.rule_insert(  x );
+        boolean inserted = state.rule_insert( x );
 
         if( inserted )
         {
             // do stuff
+        	
+        	results.add(stateToSymbol(prevState, state));
+        	env.get_board().set_results( results );
+        	
         }
 
 
@@ -100,16 +106,16 @@ public class Main extends PApplet
     
     private Symbol stateToSymbol(State prevState, State currState)
     {
-    	for(int i=0; i<BOARD_ROWS; i++)
+    	for(int i=0; i<BOARD_COLUMNS; i++)
     	{
-    		for(int j=0; j<BOARD_COLUMNS; j++)
+    		for(int j=0; j<BOARD_ROWS; j++)
     		{
     			if(prevState.field[i][j] != currState.field[i][j])
     			{
     				if(currState.field[i][j] == 1)
-    					return new Cross(i*BOARD_ROWS+j);
+    					return new Cross(i*BOARD_COLUMNS+j);
     				else
-    					return new Circle(i*BOARD_ROWS+j);
+    					return new Circle(i*BOARD_COLUMNS+j);
     			}
     		}
     	}
