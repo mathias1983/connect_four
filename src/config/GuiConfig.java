@@ -9,10 +9,16 @@ public class GuiConfig
     //board
     // spalten und reihen sind direkt von der höhe und breite abhängig!!!!
     // momentan müssen die verhältnisse selbst berechnet werden!!
-    public static final float BOARD_WIDTH   = 400;
-    public static final float BOARD_HEIGHT  = 343;
-    public static final int   BOARD_COLUMNS = 7;
-    public static final int   BOARD_ROWS    = 6;
+
+    public static final int   BOARD_COLUMNS = 5; //7;
+    public static final int   BOARD_ROWS    = 4; //6;
+    
+    static int w = SCREEN_WIDTH / BOARD_COLUMNS;
+    static int h = SCREEN_HEIGHT / BOARD_ROWS;
+    static int l = (h>w)?w:h;
+    
+    public static final float BOARD_WIDTH   = (BOARD_COLUMNS * l); // 400;
+    public static final float BOARD_HEIGHT  = (BOARD_ROWS * l); //343;
 
     //symbols
     public static final int MARGIN   = 10;

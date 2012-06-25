@@ -13,7 +13,7 @@ public class Minimax
     private static final int POS_INFINITY = (int)Double.POSITIVE_INFINITY;
     private static final int NEG_INFINITY = (int)Double.NEGATIVE_INFINITY;
     
-    private static final int MAXDEPTH = 8;
+    private static final int MAXDEPTH = 4;
     private int currentDepth;
 	
 	Player player = Player.MAX;
@@ -282,7 +282,7 @@ public class Minimax
         }
 
         int result = 10*max2 + 20*max3 - 10*min2 - 20*min3;
-        System.out.println("utility: " + result + " depth: " + currentDepth);
+//        System.out.println("utility: " + result + " depth: " + currentDepth);
        return 10*max2 + 20*max3 - 10*min2 - 20*min3;
     }
 
