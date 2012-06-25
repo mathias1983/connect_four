@@ -13,7 +13,7 @@ public class Minimax
     private static final int POS_INFINITY = (int)Double.POSITIVE_INFINITY;
     private static final int NEG_INFINITY = (int)Double.NEGATIVE_INFINITY;
     
-    private static final int MAXDEPTH = 68;
+    private static final int MAXDEPTH = 8;
     private int currentDepth;
 	
 	Player player = Player.MAX;
@@ -22,7 +22,6 @@ public class Minimax
 	public Minimax(Player p)
 	{
 		this.player = p;
-
 	}
 	
 	public State getMinimaxDecision(State initialState) 
@@ -34,11 +33,9 @@ public class Minimax
 		double bestUtility = Double.NEGATIVE_INFINITY;
 		List<Action> actionList = getActions(initialState);
 		
-		currentDepth = 0;
-		
 		for (Action action : actionList) 
 		{
-			double utility = minValue(getResult(initialState, action), Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+			double utility = minValue(getResult(initialState, action), Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 0);
 			if (utility > bestUtility) 
 			{
 				bestUtility = utility;
@@ -54,13 +51,13 @@ public class Minimax
 		return resultState;		
 	}
 	
-	private double minValue(State state, double alpha, double beta) 
+	private double minValue(State state, double alpha, double beta, int depth) 
 	{
-		currentDepth++;
+		depth++;
 		
 		double utility = Double.POSITIVE_INFINITY;
 		
-		if (terminalTest(state, currentDepth))
+		if (terminalTest(state, depth))
 		{
 //			System.out.println("terminal: ");
 //			System.out.println(state.toString());
@@ -72,7 +69,7 @@ public class Minimax
 		
 		for (Action action: actionList) 
 		{
-			double tmp = maxValue(getResult(state, action), alpha, beta);
+			double tmp = maxValue(getResult(state, action), alpha, beta, depth);
 			utility = Math.min(utility,tmp);
 			
 			if(utility <= alpha)
@@ -83,13 +80,13 @@ public class Minimax
 		return utility;
 	}
 	
-	private double maxValue(State state, double alpha, double beta) 
+	private double maxValue(State state, double alpha, double beta, int depth) 
 	{
-		currentDepth++;
+		depth++;
 		
 		double utility = Double.NEGATIVE_INFINITY;
 		
-		if (terminalTest(state, currentDepth))
+		if (terminalTest(state, depth))
 		{
 //			System.out.println("terminal: ");
 //			System.out.println(state.toString());
@@ -101,7 +98,7 @@ public class Minimax
 		
 		for (Action action: actionList) 
 		{
-			double tmp = minValue(getResult(state,action), alpha, beta);
+			double tmp = minValue(getResult(state,action), alpha, beta, depth);
 			utility = Math.max(utility, tmp);
 			
 			if(utility >= beta)
@@ -284,12 +281,15 @@ public class Minimax
             }
         }
 
+        int result = 10*max2 + 20*max3 - 10*min2 - 20*min3;
+        System.out.println("utility: " + result + " depth: " + currentDepth);
        return 10*max2 + 20*max3 - 10*min2 - 20*min3;
     }
 
 	
 	public boolean terminalTest(State state, int depth) 
 	{
+		currentDepth = depth;
 		if(depth > MAXDEPTH)
 			return true;
 		
