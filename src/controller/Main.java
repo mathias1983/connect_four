@@ -17,7 +17,6 @@ public class Main extends PApplet
     private final static int BOARD_COLUMNS = GuiConfig.BOARD_COLUMNS;
     private final static int BOARD_ROWS    = GuiConfig.BOARD_ROWS;
 
-
     LinkedList<Symbol> results;
     State state;
 
@@ -63,13 +62,16 @@ public class Main extends PApplet
         // Spielstein immer jeweils unten im Board einfügen, auch wenn click weiter oben erfolgte
         int inserted = state.rule_insert( x );
 
-        if( inserted != -1 )
+        if( inserted != -1 && !mmPlayerMin.terminalTest(state, 0))
         {
             // do stuff
             int pos = inserted*BOARD_COLUMNS + x;
         	results.add( new RedCircle(pos) );
         	env.get_board().set_results( results );
         	
+        	state = mmPlayerMin.getMinimaxDecision(state);
+        	results.add(stateToSymbol(prevState, state));
+        	env.get_board().set_results( results );
         }
 
 

@@ -12,6 +12,9 @@ public class Minimax
 
     private static final int POS_INFINITY = (int)Double.POSITIVE_INFINITY;
     private static final int NEG_INFINITY = (int)Double.NEGATIVE_INFINITY;
+    
+    private static final int MAXDEPTH = 3;
+    private int currentDepth;
 	
 	Player player = Player.MAX;
 	public static int boardSize;
@@ -26,10 +29,12 @@ public class Minimax
 	{
 		System.out.println("player: " + player);
 		long t1 = System.currentTimeMillis();
-		boolean t = terminalTest(initialState);
+//		boolean t = terminalTest(initialState);
 		Action bestAction = null;
 		double bestUtility = Double.NEGATIVE_INFINITY;
 		List<Action> actionList = getActions(initialState);
+		
+		currentDepth = 0;
 		
 		for (Action action : actionList) 
 		{
@@ -51,9 +56,11 @@ public class Minimax
 	
 	private double minValue(State state, double alpha, double beta) 
 	{
+		currentDepth++;
+		
 		double utility = Double.POSITIVE_INFINITY;
 		
-		if (terminalTest(state))
+		if (terminalTest(state, currentDepth))
 		{
 //			System.out.println("terminal: ");
 //			System.out.println(state.toString());
@@ -78,9 +85,11 @@ public class Minimax
 	
 	private double maxValue(State state, double alpha, double beta) 
 	{
+		currentDepth++;
+		
 		double utility = Double.NEGATIVE_INFINITY;
 		
-		if (terminalTest(state))
+		if (terminalTest(state, currentDepth))
 		{
 //			System.out.println("terminal: ");
 //			System.out.println(state.toString());
@@ -108,9 +117,9 @@ public class Minimax
 		State resultState = currentState.deepCopy(); 
 
 		if (action.player == Player.MAX) 
-			resultState.field[action.col][action.row] = 1;
+			resultState.field[action.row][action.col] = 1;
 		else 
-			resultState.field[action.col][action.row] = -1;
+			resultState.field[action.row][action.col] = -1;
 		
 //		System.out.println("CURRENT RESULT: ");
 //		System.out.println(resultState.toString());
@@ -279,8 +288,11 @@ public class Minimax
     }
 
 	
-	public boolean terminalTest(State state) 
+	public boolean terminalTest(State state, int depth) 
 	{
+		if(depth > MAXDEPTH)
+			return true;
+		
 		int playedFields = 0;
         int columns = GuiConfig.BOARD_COLUMNS;
         int rows    = GuiConfig.BOARD_ROWS;
