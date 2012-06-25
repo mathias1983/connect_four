@@ -19,7 +19,7 @@ public class State
      * "in der Luft" hängt.
      * @return
      */
-    public boolean rule_insert( int x )
+    public int rule_insert( int x )
     {
         int start = (GuiConfig.BOARD_ROWS - 1);
         for(int y= start; y>=0; --y)
@@ -27,12 +27,12 @@ public class State
             if( field[y][x] == 0 )
             {
                 field[y][x] = 1;
-                return true;
+                return y;
             }
 
         }
 
-        return false;
+        return -1;
     }
 
 	public State deepCopy()

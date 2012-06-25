@@ -61,13 +61,13 @@ public class Main extends PApplet
         // Testzüge!!!!!!!!!!!!!!!!!!!
 
         // Spielstein immer jeweils unten im Board einfügen, auch wenn click weiter oben erfolgte
-        boolean inserted = state.rule_insert( x );
+        int inserted = state.rule_insert( x );
 
-        if( inserted )
+        if( inserted != -1 )
         {
             // do stuff
-        	
-        	results.add(stateToSymbol(prevState, state));
+            int pos = inserted*BOARD_COLUMNS + x;
+        	results.add( new RedCircle(pos) );
         	env.get_board().set_results( results );
         	
         }
