@@ -13,7 +13,7 @@ public class Minimax
     private static final int POS_INFINITY = (int)Double.POSITIVE_INFINITY;
     private static final int NEG_INFINITY = (int)Double.NEGATIVE_INFINITY;
     
-    private static final int MAXDEPTH = 3;
+    private static final int MAXDEPTH = 68;
     private int currentDepth;
 	
 	Player player = Player.MAX;

@@ -43,11 +43,29 @@ public class Main extends PApplet
 
     public void mouseClicked()
     {
-
-
         //Minimax mmPlayerMax = new Minimax(Player.MAX, BOARD_SIZE);
 		Minimax mmPlayerMin = new Minimax(Player.MIN);
     	State prevState = state.deepCopy(); //new State();
+    	
+//    	state.field[0][1] = 1; 
+//    	results.add(stateToSymbol(prevState, state));
+//    	env.get_board().set_results( results );
+//    	prevState = state.deepCopy();	
+//    	state.field[1][2] = 1;
+//    	results.add(stateToSymbol(prevState, state));
+//    	env.get_board().set_results( results );
+//    	prevState = state.deepCopy();
+//    	state.field[2][5] = 1; 
+//    	results.add(stateToSymbol(prevState, state));
+//    	env.get_board().set_results( results );
+//    	prevState = state.deepCopy();
+//    	state.field[5][6] = -1; 
+//    	results.add(stateToSymbol(prevState, state));
+//    	env.get_board().set_results( results );
+//    	prevState = state.deepCopy();
+//    	
+//    	if(state.field[0][1] == 1)
+//    		return;
     	
         Coordinate2D co = env.get_board().get_clicked_coordinates();
         System.out.println("Section: " + co.section);
@@ -62,19 +80,19 @@ public class Main extends PApplet
         // Spielstein immer jeweils unten im Board einfügen, auch wenn click weiter oben erfolgte
         int inserted = state.rule_insert( x );
 
-        if( inserted != -1 && !mmPlayerMin.terminalTest(state, 0))
+        if( inserted != -1 && !mmPlayerMin.terminalTest(prevState, 0))
         {
             // do stuff
             int pos = inserted*BOARD_COLUMNS + x;
         	results.add( new RedCircle(pos) );
         	env.get_board().set_results( results );
+        	System.out.println(state.toString());
         	
         	state = mmPlayerMin.getMinimaxDecision(state);
         	results.add(stateToSymbol(prevState, state));
         	env.get_board().set_results( results );
+        	System.out.println(state.toString());
         }
-
-
 
   //  	State currState = prevState.deepCopy();
 
@@ -108,12 +126,15 @@ public class Main extends PApplet
     
     private Symbol stateToSymbol(State prevState, State currState)
     {
-    	for(int i=0; i<BOARD_COLUMNS; i++)
+    	for(int i=0; i<BOARD_ROWS; i++)
     	{
-    		for(int j=0; j<BOARD_ROWS; j++)
+    		for(int j=0; j<BOARD_COLUMNS; j++)
     		{
+//    			prevState.field[i][j] = -1;
     			if(prevState.field[i][j] != currState.field[i][j])
     			{
+//    				prevState.field[i][j] = 1;
+    				
     				if(currState.field[i][j] == 1)
     					return new Cross(i*BOARD_COLUMNS+j);
     				else
