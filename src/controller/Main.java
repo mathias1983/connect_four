@@ -61,29 +61,32 @@ public class Main extends PApplet
         {
         	results.add(stateToSymbol(prevState, state));
         	env.get_board().set_results( results );
-        	System.out.println(state.toString());
+//        	System.out.println(state.toString());
         	
         	prevState = state.deepCopy();
         	
-        	state = mmPlayerMin.getMinimaxDecision(state);
-        	results.add(stateToSymbol(prevState, state));
-        	env.get_board().set_results( results );
-        	System.out.println(state.toString());
+        	if(!mmPlayerMin.terminalTest(prevState, 0))
+        	{
+        		state = mmPlayerMin.getMinimaxDecision(state);
+            	results.add(stateToSymbol(prevState, state));
+            	env.get_board().set_results( results );
+//            	System.out.println(state.toString());
+        	}	
         }
     }
     
     private Symbol stateToSymbol(State prevState, State currState)
     {
-    	for(int i=0; i<BOARD_ROWS; i++)
+    	for(int y=0; y<BOARD_ROWS; y++)
     	{
-    		for(int j=0; j<BOARD_COLUMNS; j++)
+    		for(int x=0; x<BOARD_COLUMNS; x++)
     		{
-    			if(prevState.field[i][j] != currState.field[i][j])
+    			if(prevState.field[y][x] != currState.field[y][x])
     			{
-    				if(currState.field[i][j] == 1)
-    					return new RedCircle(i*BOARD_COLUMNS+j);
+    				if(currState.field[y][x] == 1)
+    					return new RedCircle(y*BOARD_COLUMNS+x);
     				else
-    					return new Cross(i*BOARD_COLUMNS+j);
+    					return new Cross(y*BOARD_COLUMNS+x);
     			}
     		}
     	}

@@ -90,9 +90,9 @@ public class State
         	for (int j=0; j<GuiConfig.BOARD_COLUMNS; j++)
         	{
                 if (field[i][j] == 1)
-                	s += "X|";
+                	s += "0|";
                 else if (field[i][j] == -1)
-                    s += "O|";
+                    s += "x|";
                 else
                     s += " |";
         	}

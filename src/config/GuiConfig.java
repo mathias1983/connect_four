@@ -7,8 +7,8 @@ public class GuiConfig
     public static final int SCREEN_HEIGHT = 600;
 
     //board
-    public static final int   BOARD_COLUMNS = 5; //7;
-    public static final int   BOARD_ROWS    = 4; //6;
+    public static final int   BOARD_COLUMNS = 7; //7;
+    public static final int   BOARD_ROWS    = 6; //6;
     
     static int w = SCREEN_WIDTH / BOARD_COLUMNS;
     static int h = SCREEN_HEIGHT / BOARD_ROWS;
