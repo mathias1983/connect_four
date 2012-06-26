@@ -14,8 +14,8 @@ public class Minimax
     private static final int POS_INFINITY = (int)Double.POSITIVE_INFINITY;
     private static final int NEG_INFINITY = (int)Double.NEGATIVE_INFINITY;
     
-    private static final int MAX_DEPTH = 3;
-    private long MAX_MILLISECONDS = 800;
+    private static final int MAX_DEPTH = 10;
+    private long MAX_MILLISECONDS = 1000;
     private long t1;
     private int currentDepth;
 	
@@ -259,9 +259,9 @@ public class Minimax
     
     private int getRowScore(int[][] field, Player player_, int x, int y, int dx, int dy) {
         int num = 0;
-        int player = -1;
+        int player = 1;
         if( player_ == Player.MAX )
-            player = 1;
+            player = -1;
 
         // 4 freie oder von spieler belegte Felder in Richtung (dx,dy)?
         if (  			 ((field[y][x]==player) 		  || (field[y][x]==0))
@@ -390,7 +390,7 @@ public class Minimax
             }
         }
 
-        int result = 100*max3 + 10*max2 + 100*min3 + 10*min2;
+        int result = 100*max3 + 10*max2 + 200*min3 + 10*min2;
         
 //        if (result>0 && player == Player.MAX  || result<0 && player == Player.MIN )
 //            return Math.abs(result);
@@ -551,28 +551,33 @@ public class Minimax
                 // Noch 4 Chips nach oben moeglich?
                 if (rows-y>=4) {
                     // 4 gleiche Chips?
-                    if (is_row(state.field, Player.MAX, x, y, 0, 1)==4)
+                    // 4 gleiche Chips?
+                    if (getRowScore(state.field, Player.MAX, x, y, 0, 1)==4 || getRowScore(state.field, Player.MIN, x, y, 0, 1)== -4)
                         return true;  // gewonnen
-                    else if (is_row(state.field, Player.MIN, x, y, 0, 1)==4)
+
+                    if (getRowScore(state.field, Player.MIN, x, y, 0, 1)==4 || getRowScore(state.field, Player.MAX, x, y, 0, 1)== -4)
                         return true;  // verloren
                 }
                 if ((rows-y>=4) && (columns-x>=4)) {
                     // 4 gleiche Chips nach rechts oben?
-                    if (is_row(state.field, Player.MAX, x, y, 1, 1)==4)
+                    if (getRowScore(state.field, Player.MAX, x, y, 1, 1)==4 || getRowScore(state.field, Player.MIN, x, y, 1, 1)== -4)
                         return true;  // gewonnen
-                    else if (is_row(state.field, Player.MIN, x, y, 1, 1)==4)
+
+                    if (getRowScore(state.field, Player.MIN, x, y, 1, 1)==4 || getRowScore(state.field, Player.MAX, x, y, 1, 1)== -4)
                         return true;  // verloren
                 }
                 if (columns-x>=4) {
-                    if (is_row(state.field, Player.MAX, x, y, 1, 0)==4)
+                    if (getRowScore(state.field, Player.MAX, x, y, 1, 0)==4 || getRowScore(state.field, Player.MIN, x, y, 1, 0)== -4)
                         return true;  // gewonnen
-                    else if (is_row(state.field, Player.MIN, x, y, 1, 0)==4)
+
+                    if (getRowScore(state.field, Player.MIN, x, y, 1, 0)==4 || getRowScore(state.field, Player.MAX, x, y, 1, 0)== -4)
                         return true;  // verloren
                 }
                 if ((columns-x>=4) && (y>=3)) {
-                    if (is_row(state.field, Player.MAX, x, y, 1, -1)==4)
+                    if (getRowScore(state.field, Player.MAX, x, y, 1, -1)==4 || getRowScore(state.field, Player.MIN, x, y, 1, -1)== -4)
                         return true;  // gewonnen
-                    else if (is_row(state.field, Player.MIN, x, y, 1, -1)==4)
+
+                    if (getRowScore(state.field, Player.MIN, x, y, 1, -1)==4 || getRowScore(state.field, Player.MAX, x, y, 1, -1)== -4)
                         return true;  // verloren
                 }
             }

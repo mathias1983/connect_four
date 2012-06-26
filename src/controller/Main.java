@@ -86,7 +86,7 @@ public class Main extends PApplet
     				if(currState.field[y][x] == 1)
     					return new RedCircle(y*BOARD_COLUMNS+x);
     				else
-    					return new Cross(y*BOARD_COLUMNS+x);
+    					return new BlueCircle(y*BOARD_COLUMNS+x);
     			}
     		}
     	}

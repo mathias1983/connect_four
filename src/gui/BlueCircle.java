@@ -25,7 +25,7 @@ public class BlueCircle implements Symbol
         gui.fill(0,0,255);
         gui.smooth();
         gui.strokeWeight(GuiConfig.STROKE);
-        gui.stroke( 255,0,0,transparency );
+        gui.stroke( 0,0,255,transparency );
         gui.ellipse(x,y,width,height);
 
 
