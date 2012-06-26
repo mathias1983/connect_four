@@ -23,12 +23,9 @@ public class Cross implements Symbol
         gui.fill(255,255,255);
         gui.smooth();
         gui.strokeWeight(GuiConfig.STROKE);
-        gui.stroke( 0,0,255,transparency );
+        gui.stroke( 0,0,0,transparency );
         gui.line( x, y, x+width, y+height );
         gui.line( x+width, y, x, y+height );
-
-
-
 
 
         /*

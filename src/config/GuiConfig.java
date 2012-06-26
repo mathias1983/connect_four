@@ -7,9 +7,6 @@ public class GuiConfig
     public static final int SCREEN_HEIGHT = 600;
 
     //board
-    // spalten und reihen sind direkt von der höhe und breite abhängig!!!!
-    // momentan müssen die verhältnisse selbst berechnet werden!!
-
     public static final int   BOARD_COLUMNS = 5; //7;
     public static final int   BOARD_ROWS    = 4; //6;
     

@@ -3,6 +3,7 @@ package minimax;
 import config.GuiConfig;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Minimax 
@@ -17,7 +18,7 @@ public class Minimax
     private int currentDepth;
 	
 	Player player = Player.MAX;
-	public static int boardSize;
+	public static int numberToWin = 4;
 
 	public Minimax(Player p)
 	{
@@ -28,10 +29,11 @@ public class Minimax
 	{
 		System.out.println("player: " + player);
 		long t1 = System.currentTimeMillis();
-//		boolean t = terminalTest(initialState);
 		Action bestAction = null;
 		double bestUtility = Double.NEGATIVE_INFINITY;
+		
 		List<Action> actionList = getActions(initialState);
+		Collections.shuffle(actionList);
 		
 		for (Action action : actionList) 
 		{
@@ -62,10 +64,11 @@ public class Minimax
 //			System.out.println("terminal: ");
 //			System.out.println(state.toString());
 //			System.out.println("");
-			return utility(state);
+			return pruned_utility(state);
 		}
 		
 		List<Action> actionList = getActions(state);
+		Collections.shuffle(actionList);
 		
 		for (Action action: actionList) 
 		{
@@ -91,10 +94,11 @@ public class Minimax
 //			System.out.println("terminal: ");
 //			System.out.println(state.toString());
 //			System.out.println("");
-			return utility(state);
+			return pruned_utility(state);
 		}
 
 		List<Action> actionList = getActions(state);
+		Collections.shuffle(actionList);
 		
 		for (Action action: actionList) 
 		{
@@ -126,7 +130,7 @@ public class Minimax
 	}
 
     /***
-     * Findet die nächsten möglichen Spielzüge und legt fest, welcher Spieler
+     * Findet die naechsten möglichen Spielzüge und legt fest, welcher Spieler
      * aktuell am Zug ist.
      * Gültige Spielzüge sind leere Spielfelder die entweder ganz unten im Spielfeld sind
      * oder leere Felder die sich über anderen Spielsteinen befinden.
@@ -195,8 +199,63 @@ public class Minimax
         }
         return num;
     }
+    
+    private int utility(State state)
+    {    	
+		int val = 0;
+		
+//		val = state.getVerticalScore(3, 0, 4);
+//		val = state.getDiagonalScore(0, 3, 2, -1);
+//		System.out.println("val: " + val);
+		
+		for (int i=0; i<numberToWin; i++) 
+			val += state.field[i][i];
+	
+		if (val == numberToWin && player == Player.MAX || val == -numberToWin && player == Player.MIN) 
+            return 1;
+    
+		if ( val == numberToWin && player == Player.MIN || val == -numberToWin && player == Player.MAX) 
+            return -1;
+		
+		val=0;
+		for (int i=0; i<numberToWin; i++) 
+			val += state.field[i][numberToWin-i-1];
 
-    private int utility( State state )
+		if (val == numberToWin && player == Player.MAX || val == -numberToWin && player == Player.MIN) 
+            return 1;
+    
+		if ( val == numberToWin && player == Player.MIN || val == -numberToWin && player == Player.MAX) 
+            return -1;
+
+		for (int i=0; i<numberToWin; i++) 
+		{
+			val = 0;
+			for (int j=0; j<numberToWin; j++) 
+				val += state.field[i][j];
+
+			if (val == numberToWin && player == Player.MAX || val == -numberToWin && player == Player.MIN) 
+	            return 1;
+	    
+			if ( val == numberToWin && player == Player.MIN || val == -numberToWin && player == Player.MAX) 
+	            return -1;
+		}
+
+		for (int j=0; j<numberToWin; j++) 
+		{
+			val = 0;
+			for (int i=0; i<numberToWin; i++) 
+				val += state.field[i][j];
+
+			if (val == numberToWin && player == Player.MAX || val == -numberToWin && player == Player.MIN) 
+	            return 1;
+	    
+			if ( val == numberToWin && player == Player.MIN || val == -numberToWin && player == Player.MAX) 
+	            return -1;
+		}
+		return 0;
+    }
+
+    private int pruned_utility( State state )
     {
         int[][] field = state.field;
         int columns = GuiConfig.BOARD_COLUMNS;
@@ -297,7 +356,7 @@ public class Minimax
         int columns = GuiConfig.BOARD_COLUMNS;
         int rows    = GuiConfig.BOARD_ROWS;
 
-        // besetzte felder zählen
+        // besetzte felder zaehlen
 		for (int i=0; i<rows; i++)
 		{
 			int totalRow = 0;

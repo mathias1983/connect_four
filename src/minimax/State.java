@@ -34,6 +34,41 @@ public class State
 
         return -1;
     }
+    
+    public int getHorizontalScore(int y, int startX, int endXInclusive)
+    {
+    	int score = 0;
+    	
+    	for(int x=startX; x<=endXInclusive && x<this.field[0].length; x++)
+    		score += this.field[y][x]; 
+    	return score;
+    }
+    
+    public int getVerticalScore(int x, int startY, int endYInclusive)
+    {
+    	int score = 0;
+    	
+    	for(int y=startY; y<=endYInclusive && y<this.field.length; y++)
+    		score += this.field[y][x]; 
+    	return score;
+    }
+    
+    public int getDiagonalScore(int startX, int startY, int length, int yDelta)
+    {
+    	int score = 0, y = startY;
+    	
+    	for(int x=startX; x<startX+length && x<this.field[0].length; x++)
+//    		for(int y=startY; y<startY+length && y<this.field.length; y+=yDelta)
+    	{
+    		score += this.field[y][x];
+    		y+=yDelta;
+    		
+    		if(y>=this.field.length || y<0)
+    			break;
+    	}
+    	
+    	return score;
+    }
 
 	public State deepCopy()
 	{
@@ -55,13 +90,13 @@ public class State
         	for (int j=0; j<GuiConfig.BOARD_COLUMNS; j++)
         	{
                 if (field[i][j] == 1)
-                	s += "X";
+                	s += "X|";
                 else if (field[i][j] == -1)
-                    s += "O";
+                    s += "O|";
                 else
-                    s += " ";
+                    s += " |";
         	}
-                s += "|\n";
+                s += "\n";
         }
         return s;
     }
